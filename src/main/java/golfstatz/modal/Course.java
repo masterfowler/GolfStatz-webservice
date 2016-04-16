@@ -1,4 +1,4 @@
-package golfstatz;
+package golfstatz.modal;
 
 public class Course {
 
