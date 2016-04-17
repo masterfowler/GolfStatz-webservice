@@ -1,21 +1,22 @@
 package golfstatz.webservice.server;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import golfstatz.core.ICourseService;
 import golfstatz.modal.Course;
 
 @RestController
 public class CourseAPIController {
-
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
+	
+	@Autowired
+	private ICourseService _service; 
+	
     @RequestMapping("/courses")
-    public Course courses(@RequestParam(value="name", defaultValue="Jason") String name) {
-        return new Course(counter.incrementAndGet(),
-                            String.format(template, name));
+    public List<Course> courses() {
+    	return _service.getCourses();
     }
 }
