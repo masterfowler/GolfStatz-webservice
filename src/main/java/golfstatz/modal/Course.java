@@ -1,18 +1,22 @@
 package golfstatz.modal;
 
+import java.util.UUID;
+
 public class Course {
 
-    private final long id;
+    private final UUID id;
     private final String name;
     private final int par;
+    private final CourseHole[] holes;
 
-    public Course(long id, String name, int par) {
+    public Course(UUID id, String name, int par, CourseHole[] holes) {
         this.id = id;
         this.name = name;
         this.par = par;
+        this.holes = holes;
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -22,5 +26,9 @@ public class Course {
     
     public int getPar() {
     	return par;
+    }
+    
+    public CourseHole[] getHoles() {
+    	return holes;
     }
 }
