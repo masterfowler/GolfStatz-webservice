@@ -2,6 +2,7 @@ package golfstatz.webservice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -9,9 +10,12 @@ import org.springframework.stereotype.Service;
 import golfstatz.core.ICourseService;
 import golfstatz.modal.Course;
 import golfstatz.modal.CourseHole;
+import golfstatz.dataaccess.ConnectionManager;
 
 @Service
 public class CourseService implements ICourseService {
+
+	private ConnectionManager _connectionManager = new ConnectionManager();
 
 	@Override
 	public List<Course> getCourses() {
@@ -35,6 +39,8 @@ public class CourseService implements ICourseService {
 										new CourseHole(UUID.randomUUID(), 17, 3),
 										new CourseHole(UUID.randomUUID(), 18, 5)
 									 };
+		
+		_connectionManager.Connect();
 		
 		List<Course> courses = new ArrayList<Course>();
     	courses.add(new Course(UUID.randomUUID(), "Hororata", 71, hororataHoles));
