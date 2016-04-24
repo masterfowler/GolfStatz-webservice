@@ -40,8 +40,6 @@ public class CourseService implements ICourseService {
 										new CourseHole(UUID.randomUUID(), 18, 5)
 									 };
 		
-		_connectionManager.Connect();
-		
 		List<Course> courses = new ArrayList<Course>();
     	courses.add(new Course(UUID.randomUUID(), "Hororata", 71, hororataHoles));
     	courses.add(new Course(UUID.randomUUID(), "Lincoln", 68, new CourseHole[18]));

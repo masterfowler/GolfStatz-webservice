@@ -1,8 +1,16 @@
 package golfstatz.dataaccess;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 import golfstatz.webservice.Config;
@@ -21,18 +29,33 @@ public class ConnectionManager {
 		_props.setProperty("password", props.getProperty("password"));
 		try {
 			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException e) {
+			connect();
+			initDatabase();
+		} catch (ClassNotFoundException | SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void Connect() {
-		try {
-			_conn = DriverManager.getConnection(_connectionString, _props);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void connect() throws SQLException {
+		_conn = DriverManager.getConnection(_connectionString, _props);
+	}
+	
+	private void initDatabase() throws SQLException, IOException {
+		PreparedStatement stmt = _conn.prepareStatement("SELECT * FROM information_schema.tables WHERE table_name=?");
+		stmt.setString(1, "course");
+		ResultSet result = stmt.executeQuery();
+		if (!result.next()) {
+			// tables haven't been created
+			createTables();
 		}
+	}
+	
+	private void createTables() throws SQLException, IOException {
+		Path path = Paths.get("", "createTables.sql");
+		String createTablesText = String.join(" ", Files.readAllLines(path));
+		Statement stmt = _conn.createStatement();
+		stmt.executeQuery(createTablesText);
+
 	}
 }
